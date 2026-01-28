@@ -1,0 +1,6 @@
+{
+  "id": "697799acbdc62934863b5223",
+  "role": "ADMIN",
+  "active": true,
+  "passwordHash": "$2a$12$SSVKkP2QfaT00xAfi3qsAOrfCCT6zJMMUFxN/itzxlTyQpIHtWSN6"
+}
