@@ -164,6 +164,71 @@ const products = [
     }
 ];
 
+const additionalPrebuilts = [
+    {
+        name: 'RigMaster Pro X1',
+        sku: 'PRE-PRO-X1',
+        category: 'prebuilt',
+        basePrice: 189900,
+        stockQuantity: 15,
+        availabilityStatus: 'in_stock',
+        shortDescription: 'Intel Core i5-13600K, NVIDIA RTX 4070 12GB, 32GB DDR5',
+        images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuDYx_49o9zOT-qDghYdQTgST4gyoPIxfn_AY5SJDn6udXWkA2YV3tdcLT_9Gjjl71vFAjTi5-HL6JcUlARiuINKpwD35F3wA_ZVbhqsUJ-HglSxTAmkf3N7AVwaFsNV73h_J97Hb92j6_OMb2ikBJz3iKz08DTHJmGro5vnVT6n4Q8ORpTuu0NZyNtwSs_4__dpcfIK3Ejbdc93MHYFt_MXE4M_Ot6YMj3RlCeULmQvagX3cWiDMch4hk8GzFQbULltJfTgF8650XQ'],
+        specifications: {
+            cpu: 'Intel Core i5-13600K',
+            gpu: 'NVIDIA RTX 4070 12GB',
+            ram: '32GB DDR5',
+        },
+    },
+    {
+        name: 'Snowblind Elite',
+        sku: 'PRE-SNOW-ELITE',
+        category: 'prebuilt',
+        basePrice: 224900,
+        stockQuantity: 8,
+        availabilityStatus: 'in_stock',
+        shortDescription: 'AMD Ryzen 7 7800X3D, Radeon RX 7900 XT, White Aesthetic',
+        images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuB_dEd5iGm5jWWItZMZvPwudFKI8XIU0Qbs1CyX8B1snek6PMkuR0agtLqAvNKsl6-2HqgW2GKvyPdD2EJvuKsCkcIiFMlRGOrfQ9Z7kJTDGz9m0BFQS1gMfylZnl6HMkSl1waXst0vK5_-vcGZfT6ll2I736wh9_57IbDvLVNNThWcx3HcKiy1tMa5uqVJW2jmI48I0ZS-zB60ckk0HUev9-ChiLqJJSr4McjDDp81g2qEPtO1obvhYexk_b-I4PgGh37krBPeELc'],
+        specifications: {
+            cpu: 'Ryzen 7 7800X3D',
+            gpu: 'Radeon RX 7900 XT',
+            ram: '32GB DDR5',
+        },
+    },
+    {
+        name: 'Titan Leviathan',
+        sku: 'PRE-TITAN-LEV',
+        category: 'prebuilt',
+        basePrice: 449900,
+        stockQuantity: 3,
+        availabilityStatus: 'in_stock',
+        shortDescription: 'Intel i9-14900K, RTX 4090 24GB, 64GB DDR5, Custom Loop',
+        images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuCIakHlrZ33T4y0eSuIS7tlD2D_XcNotwakJImgNDVP6Wqc43xGq9N5mF3wnRMCKTu5dWzC3dYUpCvlXxJJaFTCFFClHubdebV-9lTsL7OSn-VUjONQhujD7oKQd4x9zNaHAW01S4uFLtL5qFip2i_vwvggBTW8wr1VDN_18YZBG0iiCAO4iWY8VhCXGDryuGZxH3pG8nh_6ZU_4o7iyyjO1nSHDBzVPanZozlSAqYJYMjmA0M6vQ534L3NSKgpXXDRucvsMZtNzzU'],
+        specifications: {
+            cpu: 'i9-14900K',
+            gpu: 'RTX 4090 24GB',
+            ram: '64GB DDR5',
+        },
+    },
+    {
+        name: 'Creator Studio Mini',
+        sku: 'PRE-CREATOR-MINI',
+        category: 'prebuilt',
+        basePrice: 314900,
+        stockQuantity: 10,
+        availabilityStatus: 'in_stock',
+        shortDescription: 'Ryzen 9 7950X, RTX 4080 Super, Compact Form Factor',
+        images: ['https://lh3.googleusercontent.com/aida-public/AB6AXuBC6SVN0CJDNH3Ih599SCSwfadKMcsBXBw7JCRtIucpb_eDpDFX71RPOrJHgoIiCcRAhOEqTFc_1O0uIzh_9Mjy2sxEaqaQNrVcFcQZCiLWEa4GGcMhD9fnMWpgH98fUglB6C852ZFV0agRVJbqhljr1O31YQ_yyeXpDoRNWfCcm0vLb9y5ba0QoNzKpB2iIkP9VNTcR3asjHwpVCcf4AJhjKKEegAzPtk6wom_KApXtVaImKacM6B-ZAmtCeBs7Liuh3m6tYil82Y'],
+        specifications: {
+            cpu: 'Ryzen 9 7950X',
+            gpu: 'RTX 4080 Super',
+            ram: '64GB DDR5',
+        },
+    },
+];
+
+products.push(...additionalPrebuilts);
+
 async function seed() {
     try {
         await connectDb();
