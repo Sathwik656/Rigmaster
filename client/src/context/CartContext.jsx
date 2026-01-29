@@ -1,50 +1,102 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import apiClient from '../utils/apiClient';
+import { useAuth } from './AuthContext';
 
 const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState(() => {
-    const saved = localStorage.getItem('cart');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const { user } = useAuth();
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(items));
-  }, [items]);
-
-  const addItem = (product, quantity = 1) => {
-    setItems((prev) => {
-      const existing = prev.find((i) => i.productId === product._id);
-      if (existing) {
-        return prev.map((i) =>
-          i.productId === product._id ? { ...i, quantity: i.quantity + quantity } : i
-        );
-      }
-      return [...prev, { productId: product._id, product, quantity }];
-    });
-  };
-
-  const updateQuantity = (productId, quantity) => {
-    if (quantity <= 0) {
-      removeItem(productId);
+  // Fetch cart from API
+  const fetchCart = async () => {
+    if (!user) {
+      setItems([]);
       return;
     }
-    setItems((prev) => prev.map((i) => (i.productId === productId ? { ...i, quantity } : i)));
+    try {
+      setLoading(true);
+      const res = await apiClient.get('/api/cart');
+      if (res.data) {
+        setItems(res.data.items || []);
+      }
+    } catch (err) {
+      console.error('Failed to fetch cart', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const removeItem = (productId) => {
-    setItems((prev) => prev.filter((i) => i.productId !== productId));
+  useEffect(() => {
+    fetchCart();
+  }, [user]);
+
+  const addItem = async (product, quantity = 1) => {
+    const productId = product._id || product.id; // product object or ID
+    if (!user) {
+      alert('Please login to add items to cart.');
+      return;
+    }
+    try {
+      const res = await apiClient.post('/api/cart', { productId, quantity });
+      if (res.data) {
+        setItems(res.data.items);
+      }
+    } catch (err) {
+      console.error('Failed to add item', err);
+    }
   };
 
-  const clearCart = () => {
-    setItems([]);
+  const updateQuantity = async (productId, quantity) => {
+    if (!user) return;
+    try {
+      const res = await apiClient.patch(`/api/cart/${productId}`, { quantity });
+      if (res.data) {
+        setItems(res.data.items);
+      }
+    } catch (err) {
+      console.error('Failed to update quantity', err);
+    }
+  };
+
+  const removeItem = async (productId) => {
+    if (!user) return;
+    try {
+      const res = await apiClient.delete(`/api/cart/${productId}`);
+      if (res.data) {
+        setItems(res.data.items);
+      }
+    } catch (err) {
+      console.error('Failed to remove item', err);
+    }
+  };
+
+  const clearCart = async () => {
+    if (!user) return;
+    try {
+      await apiClient.delete('/api/cart');
+      setItems([]);
+    } catch (err) {
+      console.error('Failed to clear cart', err);
+    }
   };
 
   const getTotalItems = () => items.reduce((sum, i) => sum + i.quantity, 0);
 
+  // Helper to calculate total price
+  const getTotalPrice = () => {
+    return items.reduce((total, item) => {
+      // product might be populated
+      const price = item.product?.finalPrice || item.product?.basePrice || 0;
+      // price is in paise, convert to rupees for display logic if needed, but usually we keep consistency
+      return total + (price / 100) * item.quantity;
+    }, 0);
+  };
+
   return (
     <CartContext.Provider
-      value={{ items, addItem, updateQuantity, removeItem, clearCart, getTotalItems }}
+      value={{ items, addItem, updateQuantity, removeItem, clearCart, getTotalItems, getTotalPrice, loading }}
     >
       {children}
     </CartContext.Provider>

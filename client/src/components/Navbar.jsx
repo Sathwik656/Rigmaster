@@ -2,14 +2,11 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import '../styles/global.css';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const { getTotalItems } = useCart();
   const navigate = useNavigate();
-  const [showCategories, setShowCategories] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleSearch = (e) => {
@@ -20,136 +17,94 @@ export default function Navbar() {
   };
 
   return (
-    <nav style={{ background: 'var(--secondary)', borderBottom: '1px solid var(--border)', padding: '16px 0', position: 'sticky', top: 0, zIndex: 1000 }}>
-      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '24px' }}>
-        <Link to="/" style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--text)' }}>
-          RigMaster
-        </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background-dark/80 backdrop-blur-md">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center gap-8">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="flex h-8 w-8 items-center justify-center rounded bg-gradient-to-br from-primary to-secondary text-white shadow-[0_0_15px_rgba(19,91,236,0.5)]">
+              <span className="material-symbols-outlined text-[20px]">memory</span>
+            </div>
+            <span className="text-xl font-bold tracking-tight text-white group-hover:text-primary transition-colors">RigMaster</span>
+          </Link>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px', flex: 1, maxWidth: '600px' }}>
-          <Link to="/" style={{ padding: '8px 12px', borderRadius: '6px' }}>Home</Link>
-          <div
-            style={{ position: 'relative' }}
-            onMouseEnter={() => setShowCategories(true)}
-            onMouseLeave={() => setShowCategories(false)}
-          >
-            <button style={{ padding: '8px 12px', borderRadius: '6px' }}>Categories</button>
-            {showCategories && (
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '100%',
-                  left: 0,
-                  background: 'var(--secondary)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '8px',
-                  padding: '8px 0',
-                  minWidth: '200px',
-                  zIndex: 1000,
-                  marginTop: '8px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                }}
-              >
-                <Link to="/intel-custom" style={{ display: 'block', padding: '8px 16px', color: 'var(--text)' }}>Intel Custom Builds</Link>
-                <Link to="/amd-custom" style={{ display: 'block', padding: '8px 16px', color: 'var(--text)' }}>AMD Custom Builds</Link>
-                <Link to="/prebuilt" style={{ display: 'block', padding: '8px 16px', color: 'var(--text)' }}>Prebuilt PCs</Link>
-                <Link to="/laptops" style={{ display: 'block', padding: '8px 16px', color: 'var(--text)' }}>Laptops</Link>
-                <Link to="/accessories" style={{ display: 'block', padding: '8px 16px', color: 'var(--text)' }}>Accessories</Link>
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-6">
+            <Link to="/" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Home</Link>
+
+            <div className="relative group h-16 flex items-center">
+              <button className="flex items-center gap-1 text-sm font-medium text-gray-300 hover:text-white transition-colors focus:outline-none">
+                Categories
+                <span className="material-symbols-outlined text-[16px]">expand_more</span>
+              </button>
+              {/* Dropdown */}
+              <div className="absolute top-16 left-0 hidden w-48 rounded-lg border border-white/10 bg-[#161b22] p-2 shadow-xl group-hover:block">
+                <Link to="/build/intel" className="block rounded px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-primary">Intel Systems</Link>
+                <Link to="/build/amd" className="block rounded px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-red-500">AMD Systems</Link>
+                <Link to="/category/prebuilt" className="block rounded px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white">Prebuilt PCs</Link>
               </div>
-            )}
-          </div>
+            </div>
+
+            <Link to="/category/prebuilt" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Prebuilt</Link>
+            <Link to="/category/laptops" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Laptops</Link>
+            <Link to="/category/accessories" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">Accessories</Link>
+          </nav>
         </div>
 
-        <form onSubmit={handleSearch} style={{ display: 'flex', gap: '8px', flex: 1, maxWidth: '300px' }}>
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="input"
-            style={{ flex: 1 }}
-          />
-          <button type="submit" className="btn btn-secondary">Search</button>
-        </form>
+        {/* Right Actions */}
+        <div className="flex items-center gap-4">
+          {/* Search */}
+          <form onSubmit={handleSearch} className="relative hidden sm:block">
+            <input
+              className="h-9 w-64 rounded-full border border-white/10 bg-white/5 pl-10 pr-4 text-sm text-white placeholder-gray-500 focus:border-primary focus:bg-white/10 focus:ring-0 transition-all focus:outline-none"
+              placeholder="Search..."
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-gray-500">search</span>
+          </form>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-          <Link to="/cart" style={{ position: 'relative', padding: '8px', display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontSize: '20px' }}>🛒</span>
+          {/* Cart Icon */}
+          <Link to="/cart" className="flex h-9 w-9 items-center justify-center rounded-full text-gray-300 hover:bg-white/10 hover:text-white transition-colors relative">
+            <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
             {getTotalItems() > 0 && (
-              <span className="badge" style={{ 
-                position: 'absolute', 
-                top: -5, 
-                right: -5,
-                background: 'var(--primary)',
-                color: 'white',
-                borderRadius: '50%',
-                width: '20px',
-                height: '20px',
-                fontSize: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
-                {getTotalItems()}
+              <span className="absolute top-1.5 right-1.5 flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
             )}
           </Link>
-          
+
+          {/* User Avatar / Login */}
           {user ? (
-            <div 
-              style={{ position: 'relative' }}
-              onMouseEnter={() => setShowUserMenu(true)}
-              onMouseLeave={() => setShowUserMenu(false)}
-            >
-              <button style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', borderRadius: '6px', cursor: 'pointer' }}>
-                <span style={{ fontWeight: '500' }}>{user.name || user.email}</span>
-                <span style={{ fontSize: '10px' }}>▼</span>
+            <div className="relative group">
+              <button className="h-8 w-8 overflow-hidden rounded-full border border-white/10 bg-gray-800 flex items-center justify-center">
+                {/* Placeholder Avatar */}
+                <span className="material-symbols-outlined text-gray-400">person</span>
               </button>
-              
-              {showUserMenu && (
-                <div style={{
-                  position: 'absolute',
-                  top: '100%',
-                  right: 0,
-                  background: 'var(--secondary)',
-                  border: '1px solid var(--border)',
-                  borderRadius: '8px',
-                  padding: '8px 0',
-                  minWidth: '150px',
-                  zIndex: 1000,
-                  marginTop: '8px',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-                }}>
-                  <div style={{ padding: '8px 16px', fontSize: '12px', color: 'var(--text-muted)', borderBottom: '1px solid var(--border)' }}>
-                    Signed in as<br/>
-                    <strong>{user.email}</strong>
-                  </div>
-                  <Link to="/profile" style={{ display: 'block', padding: '8px 16px', color: 'var(--text)' }}>My Profile</Link>
-                  <Link to="/orders" style={{ display: 'block', padding: '8px 16px', color: 'var(--text)' }}>My Orders</Link>
-                  <div style={{ borderTop: '1px solid var(--border)', margin: '4px 0' }}></div>
-                  <button 
-                    onClick={logout} 
-                    style={{ 
-                      display: 'block', 
-                      width: '100%', 
-                      textAlign: 'left', 
-                      padding: '8px 16px', 
-                      color: 'var(--error)', 
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    Logout
-                  </button>
+              {/* User Dropdown */}
+              <div className="absolute top-full right-0 hidden w-48 rounded-lg border border-white/10 bg-[#161b22] p-2 shadow-xl group-hover:block mt-2">
+                <div className="px-4 py-2 text-xs text-gray-500 border-b border-white/10 mb-2">
+                  Signed in as <br /> <strong className="text-white">{user.name || user.email}</strong>
                 </div>
-              )}
+                <Link to="/profile" className="block rounded px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white">Profile</Link>
+                <Link to="/orders" className="block rounded px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white">Orders</Link>
+                <button
+                  onClick={logout}
+                  className="w-full text-left block rounded px-4 py-2 text-sm text-red-500 hover:bg-white/5"
+                >
+                  Sign out
+                </button>
+              </div>
             </div>
           ) : (
-            <Link to="/login" className="btn btn-primary">Login</Link>
+            <Link to="/login" className="text-sm font-medium text-white hover:text-primary transition-colors">
+              Login
+            </Link>
           )}
         </div>
       </div>
-    </nav>
+    </header>
   );
 }

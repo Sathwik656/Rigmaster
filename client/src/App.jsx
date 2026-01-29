@@ -4,6 +4,11 @@ import { CartProvider } from './context/CartContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import IntelCustomBuild from './pages/IntelCustomBuild';
+import AmdCustomBuild from './pages/AmdCustomBuild';
+import PrebuiltCollection from './pages/PrebuiltCollection';
+import GamingLaptops from './pages/GamingLaptops';
+import PcAccessories from './pages/PcAccessories';
 import CategoryPage from './pages/CategoryPage';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
@@ -29,6 +34,11 @@ export default function App() {
           <main style={{ flex: 1 }}>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/build/intel" element={<IntelCustomBuild />} />
+              <Route path="/build/amd" element={<AmdCustomBuild />} />
+              <Route path="/category/prebuilt" element={<PrebuiltCollection />} />
+              <Route path="/category/laptops" element={<GamingLaptops />} />
+              <Route path="/category/accessories" element={<PcAccessories />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/cart" element={<Cart />} />
