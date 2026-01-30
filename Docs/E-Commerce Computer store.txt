@@ -1,0 +1,418 @@
+E-Commerce Computer store
+Frontend design Architecture (Main Web Store)
+Layout (Navbar - Footer)
+
+Navbar (Home - Categories(dropdown[Intel custom, AMD custom]) -Prebuilt - laptop - accessories - SearchButton - Cart)
+
+PAGES-
+Homepage: 
+- Intro (image)
+- Browse Categories (all categories with link)
+- Feature products (products menu)
+- Intel / AMD (gradient sections)
+Intel Custom Build:
+- Intro (image)
+- Select all the features
+- Dropdown menu with components
+AMD Custom Build:
+- Intro (image)
+- Select all the features
+- Dropdown menu with components
+Prebuilt Pc
+- Intro (image)
+- Why choose prebuilt (section)
+- Prebuilt pc collection (product menu)
+- Customer reviews
+Laptops 
+- Intro (image)
+- Laptops features section
+- Choose your laptops section (benefits)
+- All laptops (product menu)
+Accessories
+- Intro (image)
+- All accessories categories
+- Search categories
+- Product menu for each categories (product menu)
+Cart
+- cart system
+
+
+Footer (Rigmaster[intro] - Categories - Support - News letter )
+    -       @2025 PC RigMaster All rights reserved      - 
+
+Frontend design Architecture (Admin Page)
+- Admin Dashboard
+- Entire sales analytics
+- Product catalog for each category
+- particular product catalog where I can add remove products
+(product name - description - price - quantity )
+
+For the above frontend design architecture of a E-Commerce store also generate me a complete backend architecture: (Tech stack - MERN)  - Payment gateway: Razorpay
+This is my request - ( Act as a senior backend architect and design a complete, production-ready backend architecture for a scalable e-commerce application using Node.js, Express.js, and MongoDB. The response must comprehensively enumerate and structure all required backend components, including server initialization and configuration, environment variable management, database connection strategy, schema design, routes, controllers, services, middleware layers, authentication and authorization flows (JWT-based with role separation), product and inventory management, order lifecycle handling, secure payment gateway integration using Razorpay (including backend-driven order creation, cryptographic payment verification, and webhook processing), centralized error handling, request validation, and deployment-readiness considerations. Clearly enforce backend ownership of all business logic, pricing calculations, and stock validation to prevent frontend manipulation, and maintain strict separation of concerns between routes, controllers, and services.
+
+Additionally, design a scalable and production-ready Product schema tailored for an e-commerce store selling items such as laptops, PCs, and accessories. The schema must be fully backend-managed and compatible with Razorpay’s order-based payment flow while keeping Razorpay strictly isolated to transaction handling. Include well-structured fields for product identity (name, SKU, category, brand), pricing (base price in INR, discount structure, tax-ready fields), inventory control (stock quantity, availability state), descriptive data (detailed description, specifications object, image references), and operational metadata (isActive flags, timestamps). Explicitly avoid storing any payment-related data in the product schema, ensure pricing integrity is enforced server-side, and align the design with real-world e-commerce best practices.
+
+Present the output in a structured, modular format using clear sectioning and bullet points, focus exclusively on backend responsibilities, avoid frontend/UI concerns, and do not include implementation code unless explicitly necessary for architectural clarity.)
+
+
+
+1. Backend Architectural Principles
+
+Backend is the single source of truth
+
+Prices, discounts, taxes, and stock are never trusted from the frontend.
+
+Frontend sends only intent (product IDs, quantities).
+
+Strict Separation of Concerns
+
+Routes → Controllers → Services → Models
+
+Stateless, Scalable, Deployment-ready
+
+JWT authentication
+
+Horizontal scalability
+
+Razorpay isolated to transactions only
+
+No Razorpay data inside product schemas
+
+Backend-driven order creation & verification
+
+2. Technology Stack (Backend Only)
+
+Runtime: Node.js
+
+Framework: Express.js
+
+Database: MongoDB (Mongoose ODM)
+
+Authentication: JWT (Access + Refresh Tokens)
+
+Payments: Razorpay
+
+Validation: Joi / Zod
+
+Security: Helmet, Rate Limiting, CORS
+
+Deployment: Docker-ready, environment-driven config
+
+3. Backend Folder Structure (Modify if required as per your needs)
+server/
+├── src/
+│   ├── config/
+│   │   ├── db.config.js
+│   │   ├── razorpay.config.js
+│   │   └── env.config.js
+│   ├── models/
+│   │   ├── User.model.js
+│   │   ├── Product.model.js
+│   │   ├── Order.model.js
+│   │   └── InventoryLog.model.js
+│   ├── routes/
+│   │   ├── auth.routes.js
+│   │   ├── product.routes.js
+│   │   ├── order.routes.js
+│   │   ├── payment.routes.js
+│   │   └── admin.routes.js
+│   ├── controllers/
+│   │   ├── auth.controller.js
+│   │   ├── product.controller.js
+│   │   ├── order.controller.js
+│   │   └── payment.controller.js
+│   ├── services/
+│   │   ├── auth.service.js
+│   │   ├── product.service.js
+│   │   ├── order.service.js
+│   │   ├── payment.service.js
+│   │   └── inventory.service.js
+│   ├── middlewares/
+│   │   ├── auth.middleware.js
+│   │   ├── role.middleware.js
+│   │   ├── error.middleware.js
+│   │   └── validate.middleware.js
+│   ├── utils/
+│   │   ├── jwt.util.js
+│   │   ├── pricing.util.js
+│   │   └── logger.util.js
+│   └── app.js
+├── server.js
+└── .env
+
+4. Environment Variable Strategy
+PORT=5000
+NODE_ENV=production
+
+MONGO_URI=
+JWT_ACCESS_SECRET=
+JWT_REFRESH_SECRET=
+
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+RAZORPAY_WEBHOOK_SECRET=
+
+
+Loaded at boot
+
+App fails fast if critical variables are missing
+
+5. Database Connection Strategy
+
+Single shared MongoDB connection pool
+
+Auto-reconnect & graceful shutdown
+
+Indexing on:
+
+sku
+
+category
+
+isActive
+
+createdAt
+
+6. Authentication & Authorization Flow (JWT)
+Roles
+
+USER
+
+ADMIN
+
+Flow
+
+User logs in → JWT issued
+
+JWT stored client-side
+
+Every request:
+
+auth.middleware validates token
+
+role.middleware enforces access
+
+Security Controls
+
+Token expiration
+
+Refresh token rotation
+
+Admin-only product & inventory access
+
+7. Product Management (Backend-Owned)
+Responsibilities
+
+Add / update / deactivate products
+
+Enforce pricing integrity
+
+Control inventory availability
+
+Category-based querying
+
+Admin-only Actions
+
+Create product
+
+Update price, stock, discount
+
+Soft delete (isActive=false)
+
+8. Production-Ready Product Schema (Core Requirement)
+
+No payment data stored here. Ever.
+
+Product Model (Conceptual Design)
+
+Identity
+
+name
+
+sku (unique, indexed)
+
+category (laptop | prebuilt | intel-custom | amd-custom | accessory)
+
+brand
+
+Pricing (Backend Controlled)
+
+basePrice (INR, integer paise)
+
+discount
+
+type (percentage | flat)
+
+value
+
+taxRate (GST-ready)
+
+finalPrice (computed server-side only)
+
+Inventory
+
+stockQuantity
+
+availabilityStatus (in_stock | out_of_stock | discontinued)
+
+Description
+
+shortDescription
+
+detailedDescription
+
+specifications (key-value object)
+
+images (array of URLs / storage keys)
+
+Operational Metadata
+
+isActive
+
+createdAt
+
+updatedAt
+
+9. Inventory Control Strategy
+
+Stock validated before order creation
+
+Stock locked during payment initiation
+
+Released on:
+
+Payment failure
+
+Payment timeout
+
+Deducted only after verified payment
+
+Inventory logs maintained for audit.
+
+10. Order Lifecycle Management
+Order States
+
+CREATED
+
+PAYMENT_PENDING
+
+PAID
+
+FAILED
+
+CANCELLED
+
+DELIVERED
+
+Order Creation Flow
+
+Frontend sends cart product IDs + quantity
+
+Backend:
+
+Fetches products
+
+Recalculates total
+
+Validates stock
+
+Order stored in DB
+
+Razorpay order created using backend amount
+
+11. Razorpay Payment Integration (Secure & Correct)
+Backend-Driven Flow
+
+Create Razorpay Order
+
+Amount calculated server-side
+
+Currency: INR
+
+Client completes payment
+
+Payment Verification
+
+HMAC SHA256 signature check
+
+Webhook Listener
+
+Final authority for payment success
+
+Updates order & inventory
+
+Critical Rules
+
+Never trust frontend payment status
+
+Webhooks are mandatory
+
+Razorpay secrets never exposed
+
+12. Payment Schema (Separate from Product)
+
+Order-Linked Only
+
+orderId
+
+razorpayOrderId
+
+razorpayPaymentId
+
+razorpaySignature
+
+status
+
+paidAt
+
+13. Centralized Error Handling
+
+Single error middleware
+
+Structured error responses
+
+No stack traces in production
+
+Logged internally
+
+14. Request Validation Layer
+
+Joi/Zod schemas per route
+
+Reject malformed input early
+
+Prevent injection & logic abuse
+
+15. Admin Dashboard Support (Backend)
+
+Sales analytics APIs
+
+Revenue aggregation
+
+Product performance metrics
+
+Stock alerts
+
+16. Deployment-Readiness Checklist
+
+Environment-based config
+
+Stateless backend
+
+Horizontal scaling compatible
+
+Webhook retry safety
+
+Graceful shutdown
+
+Docker-ready
+
+17. Key Architectural Guarantees
+
+Frontend cannot manipulate price or stock
+
+Razorpay only handles transactions
+
+Products are payment-agnostic
+
+Backend owns every business rule

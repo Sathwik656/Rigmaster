@@ -1,0 +1,484 @@
+E-Commerce Computer store
+Frontend design Architecture (Main Web Store)
+Layout (Navbar - Footer)
+
+Navbar (Home - Categories(dropdown[Intel custom, AMD custom]) -Prebuilt - laptop - accessories - SearchButton - Cart)
+
+PAGES-
+Homepage: 
+- Intro (image)
+- Browse Categories (all categories with link)
+- Feature products (products menu)
+- Intel / AMD (gradient sections)
+Intel Custom Build:
+- Intro (image)
+- Select all the features
+- Dropdown menu with components
+AMD Custom Build:
+- Intro (image)
+- Select all the features
+- Dropdown menu with components
+Prebuilt Pc
+- Intro (image)
+- Why choose prebuilt (section)
+- Prebuilt pc collection (product menu)
+- Customer reviews
+Laptops 
+- Intro (image)
+- Laptops features section
+- Choose your laptops section (benefits)
+- All laptops (product menu)
+Accessories
+- Intro (image)
+- All accessories categories
+- Search categories
+- Product menu for each categories (product menu)
+Cart
+- cart system
+
+
+Footer (Rigmaster[intro] - Categories - Support - News letter )
+    -       @2025 PC RigMaster All rights reserved      - 
+
+Frontend design Architecture (Admin Page)
+- Admin Dashboard
+- Entire sales analytics
+- Product catalog for each category
+- particular product catalog where I can add remove products
+(product name - description - price - quantity )
+
+E-Commerce Computer Store
+Frontend Architecture Specification
+1. Overall Frontend Principles
+
+Component-driven architecture (React-first mindset)
+
+Separation of concerns
+
+Layout components
+
+Page-level containers
+
+Reusable UI components
+
+API-driven rendering
+
+All product, pricing, and inventory data consumed from backend APIs
+
+Scalable routing
+
+Category-based and role-based routing
+
+State management
+
+Cart, auth state, filters, and search handled globally
+
+PART A — MAIN WEB STORE (Customer-Facing)
+2. Global Layout Architecture
+2.1 Application Shell
+<App>
+ ├── <Navbar />
+ ├── <MainContent />   ← Routed Pages
+ └── <Footer />
+</App>
+
+
+Persistent Navbar and Footer across all pages
+
+MainContent dynamically changes via routing
+
+3. Navbar Architecture
+3.1 Navbar Structure
+
+Primary Navigation
+
+Home
+
+Categories (Dropdown)
+
+Intel Custom Builds
+
+AMD Custom Builds
+
+Prebuilt PCs
+
+Laptops
+
+Accessories
+
+Utility Actions
+
+Search Button (global product search)
+
+Cart Icon (with item count badge)
+
+3.2 Navbar Responsibilities
+
+Global navigation
+
+Category discovery
+
+Quick access to cart
+
+Persistent search entry point
+
+4. Page-Level Architecture (Web Store)
+4.1 Homepage
+
+Purpose: Product discovery and brand positioning
+
+Sections
+
+Intro / Hero Section
+
+Brand message
+
+High-impact visual
+
+Browse Categories
+
+All major product categories
+
+Click-through navigation
+
+Featured Products
+
+Backend-driven featured product list
+
+Intel / AMD Highlight Sections
+
+Visually distinct gradient sections
+
+Entry points into custom build flows
+
+4.2 Intel Custom Build Page
+
+Purpose: Guided PC configuration (Intel platform)
+
+Sections
+
+Intro Section
+
+Intel branding & explanation
+
+Configuration Section
+
+Feature selection blocks
+
+Component dropdowns:
+
+CPU
+
+Motherboard
+
+RAM
+
+Storage
+
+GPU
+
+PSU
+
+Cabinet
+
+Cooling
+
+Price Summary Panel
+
+Dynamic total (read-only, backend-calculated)
+
+4.3 AMD Custom Build Page
+
+Purpose: Guided PC configuration (AMD platform)
+
+Structure:
+Identical to Intel Custom Build, differing only in:
+
+Component compatibility rules
+
+AMD-focused messaging
+
+4.4 Prebuilt PC Page
+
+Purpose: Sell ready-made systems
+
+Sections
+
+Intro Section
+
+Prebuilt value proposition
+
+Why Choose Prebuilt
+
+Convenience
+
+Tested configurations
+
+Warranty & support
+
+Prebuilt PC Collection
+
+Product grid
+
+Filters (price, use-case)
+
+Customer Reviews
+
+Testimonials
+
+Ratings
+
+4.5 Laptops Page
+
+Purpose: Laptop catalog browsing
+
+Sections
+
+Intro Section
+
+Laptop category overview
+
+Laptop Features Section
+
+Performance
+
+Portability
+
+Battery life
+
+Choose Your Laptop
+
+Benefits-based comparison
+
+Use-case guidance
+
+All Laptops
+
+Full product listing
+
+Filters & sorting
+
+4.6 Accessories Page
+
+Purpose: Accessory discovery & add-ons
+
+Sections
+
+Intro Section
+
+Accessories Categories
+
+Mouse
+
+Keyboard
+
+Monitor
+
+Storage
+
+Cooling
+
+Cables
+
+Category Search & Filters
+
+Category-wise Product Menus
+
+Separate product grids per category
+
+4.7 Cart Page
+
+Purpose: Purchase preparation
+
+Features
+
+Cart item list
+
+Quantity controls
+
+Remove item
+
+Price summary
+
+Proceed to checkout CTA
+
+Rules
+
+Prices are display-only
+
+Final pricing validated at backend checkout
+
+5. Footer Architecture
+5.1 Footer Sections
+
+RigMaster Intro
+
+Brand overview
+
+Categories
+
+Quick links
+
+Support
+
+Contact
+
+FAQs
+
+Policies
+
+Newsletter
+
+Email subscription form
+
+5.2 Footer Base
+© 2025 PC RigMaster. All rights reserved.
+
+PART B — ADMIN WEBSITE (Management Console)
+6. Admin Frontend Architecture Overview
+
+Access Control
+
+Admin-only authenticated routes
+
+Completely isolated from customer UI
+
+<AdminApp>
+ ├── <AdminSidebar />
+ ├── <AdminTopbar />
+ └── <AdminMainContent />
+</AdminApp>
+
+7. Admin Navigation Structure
+Sidebar Navigation
+
+Dashboard
+
+Sales Analytics
+
+Product Management
+
+Intel Custom
+
+AMD Custom
+
+Prebuilt PCs
+
+Laptops
+
+Accessories
+
+Orders (optional extension)
+
+8. Admin Page Architecture
+8.1 Admin Dashboard
+
+Purpose: Business overview
+
+Widgets
+
+Total revenue
+
+Orders count
+
+Active products
+
+Low-stock alerts
+
+Charts
+
+Daily / monthly sales trends
+
+Category-wise performance
+
+8.2 Sales Analytics Page
+
+Purpose: Deep business insights
+
+Sections
+
+Revenue over time
+
+Product performance
+
+Category contribution
+
+Order volume analysis
+
+Data Characteristics
+
+Read-only
+
+Backend aggregated data
+
+8.3 Product Catalog (Category View)
+
+Purpose: Manage products at scale
+
+Features
+
+Category-wise product listing
+
+Search & filters
+
+Status indicators (active / inactive)
+
+Stock visibility
+
+8.4 Individual Product Management Page
+
+Purpose: Full product control
+
+Editable Fields
+
+Product name
+
+Description
+
+Specifications
+
+Price (base price only)
+
+Quantity / stock
+
+Images
+
+Active / inactive toggle
+
+Actions
+
+Add new product
+
+Update product
+
+Remove (soft delete)
+
+9. Frontend Data Flow Expectations
+
+All data fetched via REST APIs
+
+Admin actions trigger backend validation
+
+No pricing or stock logic calculated in frontend
+
+Optimistic UI updates only after API success
+
+10. Scalability & Maintainability Notes
+
+Page-level lazy loading
+
+Reusable product card components
+
+Shared filter & sorting logic
+
+Consistent design system for web + admin
+
+11. Architectural Guarantees
+
+Customer and Admin UIs are fully isolated
+
+Frontend never owns business logic
+
+Easily extensible to mobile or app-based frontend
+
+Ready for production-grade backend integration
