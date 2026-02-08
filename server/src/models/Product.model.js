@@ -12,16 +12,21 @@ const discountSchema = new mongoose.Schema(
 const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
-    sku: { type: String, required: true, unique: true, trim: true },
+    sku: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
     category: {
       type: String,
       enum: ['laptop', 'prebuilt', 'intel-custom', 'amd-custom', 'accessory'],
       required: true,
     },
     brand: { type: String, trim: true },
-    basePrice: { type: Number, required: true, min: 0 }, // INR paise
+    basePrice: { type: Number, required: true, min: 0 },
     discount: { type: discountSchema, default: null },
-    taxRate: { type: Number, default: 0.18, min: 0, max: 1 }, // e.g. 0.18 = 18% GST
+    taxRate: { type: Number, default: 0.18, min: 0, max: 1 },
     stockQuantity: { type: Number, required: true, min: 0, default: 0 },
     availabilityStatus: {
       type: String,
@@ -37,7 +42,7 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-productSchema.index({ sku: 1 });
+// ✅ keep non-duplicated indexes
 productSchema.index({ category: 1 });
 productSchema.index({ isActive: 1 });
 productSchema.index({ createdAt: -1 });

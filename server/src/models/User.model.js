@@ -2,7 +2,13 @@ import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema(
   {
-    email: { type: String, required: true, unique: true, trim: true, lowercase: true },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+    },
     passwordHash: { type: String, required: true, select: false },
     name: { type: String, trim: true },
     role: {
@@ -16,7 +22,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.index({ email: 1 });
+// ✅ keep compound index (no duplication here)
 userSchema.index({ role: 1, isActive: 1 });
 
 export const User = mongoose.model('User', userSchema);
