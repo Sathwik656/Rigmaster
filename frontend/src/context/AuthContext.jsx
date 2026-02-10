@@ -37,7 +37,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem('accessToken', res.data.data.accessToken);
       localStorage.setItem('refreshToken', res.data.data.refreshToken);
       setUser(res.data.data.user);
-      return { success: true };
+      return { success: true, user: res.data.data.user };
     }
     return { success: false, error: res.data.error };
   };

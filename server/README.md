@@ -54,6 +54,7 @@ server/
 
 - `npm test` – runs all tests (uses in-memory MongoDB and mocked Razorpay when `NODE_ENV=test`). Run from project root after `npm install`.
 - Unit tests for pricing logic in `test/pricing.test.js`; full API/flow tests in `test/backend.test.js`.
+- Route-by-route manual API testing guide: `API_TESTING.md`.
 
 ## Deployment
 

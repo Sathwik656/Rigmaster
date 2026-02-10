@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import apiClient from '../utils/apiClient';
-import { API_ENDPOINTS } from '../config/api';
-import { formatPrice } from '../utils/formatPrice';
+import apiClient from '../../utils/apiClient';
+import { API_ENDPOINTS } from '../../config/api';
+import { formatPrice } from '../../utils/formatPrice';
 
 const CATEGORIES = [
     { value: 'laptop', label: 'Laptop' },
